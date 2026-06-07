@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ระบบคีย์หวย</title>
+  <style>
+    body { font-family: Arial; background:#111; color:#fff; text-align:center;}
+    input, button { padding:10px; margin:5px; border-radius:5px; border:none;}
+    button { background:orange; color:#000; }
+    .box { margin-top:20px; }
+  </style>
+</head>
+<body>
+
+<h1>ระบบคีย์หวย</h1>
+
+<div id="login">
+  <h3>เข้าสู่ระบบ</h3>
+  <input id="user" placeholder="Username"><br>
+  <input id="pass" type="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<div id="app" style="display:none;">
+  <h3>คีย์เลข</h3>
+  <input id="number" placeholder="เลข"><br>
+  <input id="type" placeholder="ประเภท (3ตัว/2ตัว/วิ่ง)"><br>
+  <button onclick="add()">บันทึก</button>
+
+  <div class="box">
+    <h3>รายการ</h3>
+    <ul id="list"></ul>
+  </div>
+</div>
+
+<script>
+let data = [];
+
+function login(){
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
+
+  if(u==="admin" && p==="1234"){
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+  }else{
+    alert("ผิด");
+  }
+}
+
+function add(){
+  let num = document.getElementById("number").value;
+  let type = document.getElementById("type").value;
+
+  data.push(num + " ("+type+")");
+  render();
+}
+
+function render(){
+  let list = document.getElementById("list");
+  list.innerHTML="";
+  data.forEach(d=>{
+    let li = document.createElement("li");
+    li.innerText = d;
+    list.appendChild(li);
+  });
+}
+</script>
+
+</body>
+</html>
