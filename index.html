@@ -50,21 +50,52 @@ function login(){
 function add(){
   let num = document.getElementById("number").value;
   let type = document.getElementById("type").value;
+  let amount = document.getElementById("amount").value;
 
-  data.push(num + " ("+type+")");
+  // ตรวจตัวเลข
+  if(!/^[0-9]+$/.test(num)){
+    alert("กรอกได้เฉพาะตัวเลข!");
+    return;
+  }
+
+  // ตรวจความยาว
+  if(type === "2ตัว" && num.length !== 2){
+    alert("ต้องเป็นเลข 2 ตัว");
+    return;
+  }
+
+  if(type === "3ตัว" && num.length !== 3){
+    alert("ต้องเป็นเลข 3 ตัว");
+    return;
+  }
+
+  if(!amount || amount <= 0){
+    alert("ใส่จำนวนเงินให้ถูกต้อง");
+    return;
+  }
+
+  // 🔥 เช็คเลขซ้ำ
+  let duplicate = data.find(d => d.num === num && d.type === type);
+  if(duplicate){
+    let confirmAdd = confirm("เลขนี้มีแล้ว!\nต้องการเพิ่มซ้ำไหม?");
+    if(!confirmAdd) return;
+  }
+
+  // 🔥 ยืนยันก่อนบันทึก
+  let confirmSave = confirm(
+    ยืนยันรายการ\n\nเลข: ${num}\nประเภท: ${type}\nจำนวนเงิน: ${amount} บาท
+  );
+
+  if(!confirmSave) return;
+
+  // บันทึก
+  data.push({num, type, amount});
   render();
-}
 
-function render(){
-  let list = document.getElementById("list");
-  list.innerHTML="";
-  data.forEach(d=>{
-    let li = document.createElement("li");
-    li.innerText = d;
-    list.appendChild(li);
-  });
+  // ล้างค่า
+  document.getElementById("number").value = "";
+  document.getElementById("amount").value = "";
 }
 </script>
-
 </body>
 </html>
